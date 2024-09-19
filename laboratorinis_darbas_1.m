@@ -92,58 +92,49 @@ for i=1:5
     E(i) = T(i) - y;
     e = e + abs(E(i));
 end
-fprintf('1 uzduoties pabaiga, galutinis error rezultatas yra %d\r\n', e)
+fprintf('1 uzduoties pabaiga\r\n')
 
 %% antra dalis
+disp('2 uzduoties pradzia')
 % nustatau savo zingsi lygu 0.1
 eta = 0.1;
-% P matrica yra sudaryta is 5 spalvos ir 5 apvalumo pozymiu, tad
-% ciklas suksis 5 kartus
-for i = 1:5
-    % nustatau pradines atsitiktines vertes
-    w1 = rand(1);
-    w2 = rand(1);
-    b = rand(1);
-    e = 1;
-    % sukame begalini cikla tol, kol gausime, kad erroras nuotraukai yra 0
-    while e ~= 0
-        w1 = w1 + eta + e + P(1, i);
-        w2 = w2 + eta + e + P(2, i);
-        b = b + eta * e;
+e = 1;
+while e ~= 0
+    for i = 1:5
+        w1 = w1 + eta * E(i) * P(1, i);
+        w2 = w2 + eta * E(i) * P(2, i);
+        b = b + eta * E(i);
         v = P(1,i)*w1 + P(2,i)*w2 + b;
         if v > 0
             y = 1;
         else
             y = -1;
         end
-        e = T(i) - y;
+    E(i) = T(i) - y;
     end
-    fprintf('Ciklo iteracija %d baigta, zingsniu vertes yra: w1: %f w2: %f b: %f\r', i, w1, w2, b);
+    e = E(1) + E(2) + E(3) + E(4) + E(5);
+    fprintf('error rezultatai: %d %d %d %d %d\r\n', E(1), E(2), E(3), E(4), E(5))
 end
-disp('Mokymo algoritmas pasibaige');
+disp('2 uzduoties pabaiga');
 disp('Tikrinamas algoritmas naudojant likusius duomenis')
 x1=[hsv_value_A4 hsv_value_A5 hsv_value_A6 hsv_value_P3 hsv_value_P4];
 x2=[metric_A4 metric_A5 metric_A6 metric_P3 metric_P4];
 T = [1; 1; 1; -1; -1];
-for i = 1:5
-    % nustatau pradines atsitiktines vertes
-    w1 = rand(1);
-    w2 = rand(1);
-    b = rand(1);
-    e = 1;
-    % sukame begalini cikla tol, kol gausime, kad erroras nuotraukai yra 0
-    while e ~= 0
-        w1 = w1 + eta + e + P(1, i);
-        w2 = w2 + eta + e + P(2, i);
-        b = b + eta * e;
+e = 1;
+while e ~= 0
+    for i = 1:5
+        w1 = w1 + eta * E(i) * P(1, i);
+        w2 = w2 + eta * E(i) * P(2, i);
+        b = b + eta * E(i);
         v = P(1,i)*w1 + P(2,i)*w2 + b;
         if v > 0
             y = 1;
         else
             y = -1;
         end
-        e = T(i) - y;
+    E(i) = T(i) - y;
     end
-    fprintf('Ciklo iteracija %d baigta, zingsniu vertes yra: w1: %f w2: %f b: %f\r', i, w1, w2, b);
+    e = E(1) + E(2) + E(3) + E(4) + E(5);
+    fprintf('error rezultatai: %d %d %d %d %d\r\n', E(1), E(2), E(3), E(4), E(5))
 end
 disp('Tikrinimo algoritmas pasibaige, jeigu sita zinute yra matoma, reiskia, algoritmas veikia')
